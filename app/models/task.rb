@@ -3,4 +3,8 @@ class Task < ActiveRecord::Base
   scope :completed, -> { where.not(completed_at: nil) }
 
   validates :name, presence: true
+
+  def as_json(options={})
+    super(only: [:id, :name, :completed_at])
+  end
 end
