@@ -28,6 +28,12 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    Task.find(params[:id]).destroy
+
+    head 204
+  end
+
   private
     def task_params
       params.require(:task).permit(:name, :completed_at)
