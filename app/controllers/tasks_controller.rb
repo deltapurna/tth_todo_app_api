@@ -12,7 +12,17 @@ class TasksController < ApplicationController
     task = Task.new(task_params)
 
     if task.save
-      render json: task, status: 201
+      render json: task, status: 201, location: task
+    else
+      render json: task.errors, status: 422
+    end
+  end
+
+  def update
+    task = Task.find(params[:id])
+    
+    if task.update(task_params)
+      render json: task, status: 200, location: task
     else
       render json: task.errors, status: 422
     end
@@ -20,6 +30,6 @@ class TasksController < ApplicationController
 
   private
     def task_params
-      params.require(:task).permit(:name)
+      params.require(:task).permit(:name, :completed_at)
     end
 end

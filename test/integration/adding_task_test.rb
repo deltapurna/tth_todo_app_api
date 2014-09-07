@@ -9,7 +9,11 @@ class AddingTaskTest < ActionDispatch::IntegrationTest
     assert_equal 201, response.status
     assert_equal Mime::JSON, response.content_type
 
-    assert_equal 'a new task', JSON.parse(response.body)['name']
+    response_body = JSON.parse(response.body)
+    task = Task.find(response_body['id'])
+    assert_equal task_url(task), response.location
+
+    assert_equal 'a new task', response_body['name']
   end
 
   test 'not adding task with invalid parameters' do
